@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<script src = "jquery.1.11.3.min.js"> </script>
+	</head>
+	
+    <body>
+		<br><br>
+		URL: <input type = "text" size = "200" name = "url">
+		<input type = "submit" name = "submit" value = "submit">
+		<p id = "result"> </p>
+    </body>
+</html>
+
+<script>
+	
+	$("input[name = 'submit']").click(function() {
+
+		var url = $("input[name = 'url']").val().trim();
+		if (url == "") {
+			alert("Please input URL");
+			return;
+		}
+        
+		$.ajax({
+			url: "http://short.com/getShourtUrl.php", 
+			method: "POST",
+			data: {'url': url },
+			
+		}).done(function(data) {		
+			var oResult = JSON.parse(data);
+			if (oResult['sError'] != '' ) {
+				alert(oResult['sError']);
+				return ;
+			} 
+			$("p[id = 'result']").html("<font size = 6> short URL = <a href='" + oResult['sUrl'] +"' target = '_blank'> " + oResult['sUrl'] +"</a></font>");
+		});	
+		
+	});
+	
+</script>
+
+
